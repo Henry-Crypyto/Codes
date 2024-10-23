@@ -1,0 +1,1746 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     62714,       1736]
+NotebookOptionsPosition[     60496,       1664]
+NotebookOutlinePosition[     61049,       1686]
+CellTagsIndexPosition[     61006,       1683]
+WindowTitle->de Casteljau Algorithm for a Tensor-Product B\351zier Surface - \
+Source
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+de Casteljau Algorithm for a Tensor-Product B\[EAcute]zier Surface\
+\>", "Section",
+ CellFrameColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108],
+ FontColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Grid", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"Framed", "[", 
+        RowBox[{"legende", ",", 
+         RowBox[{"FrameMargins", "\[Rule]", "0"}]}], "]"}], "}"}], ",", 
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"Graphics3D", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"Black", ",", " ", 
+             RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
+             RowBox[{"Point", "[", 
+              RowBox[{"s", "[", 
+               RowBox[{"u0", ",", "v0"}], "]"}], "]"}], ",", "Blue", ",", " ", 
+             RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
+             RowBox[{"Point", "[", "listpoint", "]"}], ",", 
+             RowBox[{"GraphicsComplex", "[", 
+              RowBox[{"listpoint", ",", 
+               RowBox[{"Line", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"4", ",", "5", ",", "6"}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"7", ",", "8", ",", "9"}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"1", ",", "4", ",", "7"}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"2", ",", "5", ",", "8"}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"3", ",", "6", ",", "9"}], "}"}]}], "}"}], "]"}]}],
+               "]"}]}], "}"}], ",", 
+           RowBox[{"BoxRatios", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"1.7", ",", "1", ",", "1"}], "}"}]}]}], "]"}], ",", 
+         RowBox[{"ParametricPlot3D", "[", 
+          RowBox[{
+           RowBox[{"s", "[", 
+            RowBox[{"u", ",", "v"}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"u", ",", "0", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"v", ",", "0", ",", "1"}], "}"}], ",", 
+           RowBox[{"Mesh", "\[Rule]", "None"}], ",", 
+           RowBox[{"BoundaryStyle", "\[Rule]", 
+            RowBox[{"Directive", "[", 
+             RowBox[{"Thin", ",", "Black"}], "]"}]}], ",", 
+           RowBox[{"ColorFunction", "\[Rule]", 
+            RowBox[{"ColorData", "[", "\"\<LightTerrain\>\"", "]"}]}], ",", 
+           RowBox[{"PlotStyle", "\[Rule]", 
+            RowBox[{"Opacity", "[", "0.7", "]"}]}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Graphics3D", "[", 
+          RowBox[{"Switch", "[", 
+           RowBox[{"meth", ",", "\[IndentingNewLine]", "1", ",", 
+            RowBox[{"{", 
+             RowBox[{"Green", ",", " ", 
+              RowBox[{"PointSize", "[", "0.012", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"polyu", "[", "u0", "]"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{"GraphicsComplex", "[", 
+                 RowBox[{
+                  RowBox[{"constrdecast", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Transpose", "[", "r", "]"}], "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", "u0"}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Line", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}], ",", 
+                    RowBox[{"Point", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}]}], "}"}]}], "]"}], 
+                ",", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}], ",", 
+              "\[IndentingNewLine]", "Red", ",", 
+              RowBox[{"Line", "[", 
+               RowBox[{"polyu", "[", "u0", "]"}], "]"}], ",", 
+              RowBox[{"GraphicsComplex", "[", 
+               RowBox[{
+                RowBox[{"constrdecast", "[", 
+                 RowBox[{
+                  RowBox[{"polyu", "[", "u0", "]"}], ",", "v0"}], "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"Line", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}], ",", 
+                  RowBox[{"Point", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}]}], "}"}]}], "]"}]}],
+              "}"}], ",", "\[IndentingNewLine]", "2", ",", 
+            RowBox[{"{", 
+             RowBox[{"Green", ",", " ", 
+              RowBox[{"PointSize", "[", "0.012", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"polyv", "[", "v0", "]"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Table", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"GraphicsComplex", "[", 
+                 RowBox[{
+                  RowBox[{"constrdecast", "[", 
+                   RowBox[{
+                    RowBox[{"r", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", "v0"}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Line", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}], ",", 
+                    RowBox[{"Point", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}]}], "}"}]}], "]"}], 
+                ",", 
+                RowBox[{"{", 
+                 RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}], ",", 
+              "\[IndentingNewLine]", "Red", ",", 
+              RowBox[{"Line", "[", 
+               RowBox[{"polyv", "[", "v0", "]"}], "]"}], ",", 
+              RowBox[{"GraphicsComplex", "[", 
+               RowBox[{
+                RowBox[{"constrdecast", "[", 
+                 RowBox[{
+                  RowBox[{"polyv", "[", "v0", "]"}], ",", "u0"}], "]"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"Line", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}], ",", 
+                  RowBox[{"Point", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"4", ",", "5"}], "}"}], "]"}]}], "}"}]}], "]"}]}],
+              "}"}], ",", "\[IndentingNewLine]", "3", ",", 
+            RowBox[{"{", 
+             RowBox[{"Green", ",", 
+              RowBox[{"Module", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"a", "=", 
+                   RowBox[{"decastmat", "[", 
+                    RowBox[{"r", ",", "u0", ",", "v0"}], "]"}]}], ",", "b"}], 
+                 "}"}], ",", 
+                RowBox[{
+                 RowBox[{"b", "=", 
+                  RowBox[{"decastmat", "[", 
+                   RowBox[{
+                    RowBox[{"a", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], ",", "u0", ",", "v0"}], 
+                   "]"}]}], ";", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"GraphicsComplex", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"a", ",", "2"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Point", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"7", ",", "8", ",", "10", ",", "9"}], "}"}], 
+                    "]"}], ",", 
+                    RowBox[{"Line", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "5", ",", "6"}], "}"}]}], "}"}], "]"}], 
+                    ",", "Red", ",", 
+                    RowBox[{"Line", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"7", ",", "8", ",", "10", ",", "9", ",", "7"}], 
+                    "}"}], "]"}]}], "}"}]}], "]"}], ",", "Red", ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"GraphicsComplex", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"b", ",", "2"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Point", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "2"}], "}"}], "]"}], ",", 
+                    RowBox[{"Line", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "2"}], "}"}], "]"}]}], "}"}]}], "]"}]}],
+                   "}"}]}]}], "]"}]}], "}"}]}], "\[IndentingNewLine]", "]"}], 
+          "]"}], ",", 
+         RowBox[{"ImageSize", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"330", ",", "300"}], "}"}]}]}], "]"}], "}"}]}], "}"}], 
+    "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"Row", "[", 
+    RowBox[{"{", 
+     RowBox[{"Control", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "u0", ",", "0.5", ",", 
+          "\"\<\!\(\*SubscriptBox[\(u\), \(0\)]\)\>\""}], "}"}], ",", "0.01", 
+        ",", "1", ",", 
+        RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], "]"}], 
+     "}"}], "]"}], ",", 
+   RowBox[{"Row", "[", 
+    RowBox[{"{", 
+     RowBox[{"Control", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "v0", ",", "0.5", ",", 
+          "\"\<\!\(\*SubscriptBox[\(v\), \(0\)]\)\>\""}], "}"}], ",", "0.01", 
+        ",", "1", ",", 
+        RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], "]"}], 
+     "}"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"meth", ",", "1", ",", "\"\<de Casteljau procedure:\>\""}], 
+      "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"1", "\[Rule]", "\"\<first by u\>\""}], ",", 
+       RowBox[{"2", "\[Rule]", "\"\<first by v\>\""}], ",", 
+       RowBox[{"3", "\[Rule]", "\"\<simultaneous\>\""}]}], "}"}]}], "}"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"Initialization", "\[RuleDelayed]", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"r", "=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"3", ",", "0", ",", "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3.5", ",", "1", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "3", ",", "0"}], "}"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"2", ",", "0", ",", "1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "2", ",", "4"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"2", ",", "4", ",", "2"}], "}"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "2", ",", "5"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "4", ",", "4"}], "}"}]}], "}"}]}], "}"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"listpoint", "=", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"r", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"s", "[", 
+        RowBox[{"u_", ",", "v_"}], "]"}], ":=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"3", "-", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", "2.`"}], " ", 
+             SuperscriptBox["u", "2"], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "1.`"}], "+", "v"}], ")"}], " ", 
+             RowBox[{"(", 
+              RowBox[{"0.5`", "\[InvisibleSpace]", "+", "v"}], ")"}]}], "+", 
+            RowBox[{"v", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "1.`"}], "+", 
+               RowBox[{"1.`", " ", "v"}]}], ")"}]}], "+", 
+            RowBox[{"u", " ", 
+             RowBox[{"(", 
+              RowBox[{"2.`", "\[InvisibleSpace]", "-", 
+               RowBox[{"2.`", " ", "v"}], "+", 
+               RowBox[{"2.`", " ", 
+                SuperscriptBox["v", "2"]}]}], ")"}]}]}], ")"}]}], ",", 
+         RowBox[{"v", " ", 
+          RowBox[{"(", 
+           RowBox[{"2", "-", 
+            RowBox[{"2", " ", "u", " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "2"}], "+", "v"}], ")"}]}], "+", 
+            RowBox[{
+             SuperscriptBox["u", "2"], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "2"}], "+", "v"}], ")"}]}], "+", "v"}], ")"}]}], 
+         ",", 
+         RowBox[{"2", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"-", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"-", "1"}], "+", "v"}], ")"}]}], " ", "v"}], "+", 
+            RowBox[{"u", " ", 
+             RowBox[{"(", 
+              RowBox[{"1", "+", 
+               RowBox[{"4", " ", "v"}], "-", 
+               RowBox[{"3", " ", 
+                SuperscriptBox["v", "2"]}]}], ")"}]}], "+", 
+            RowBox[{
+             SuperscriptBox["u", "2"], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "1"}], "+", 
+               SuperscriptBox["v", "2"]}], ")"}]}]}], ")"}]}]}], "}"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"polyu", "[", "u0_", "]"}], ":=", 
+       RowBox[{"Sum", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"BernsteinBasis", "[", 
+           RowBox[{"2", ",", 
+            RowBox[{"i", "-", "1"}], ",", "u0"}], "]"}], "*", 
+          RowBox[{"r", "[", 
+           RowBox[{"[", "i", "]"}], "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"polyv", "[", "v0_", "]"}], ":=", 
+       RowBox[{"Sum", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"BernsteinBasis", "[", 
+           RowBox[{"2", ",", 
+            RowBox[{"i", "-", "1"}], ",", "v0"}], "]"}], "*", 
+          RowBox[{
+           RowBox[{"Transpose", "[", "r", "]"}], "[", 
+           RowBox[{"[", "i", "]"}], "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"decastmat", "[", 
+        RowBox[{"r_", ",", "u_", ",", "v_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"a", ",", 
+           RowBox[{"n", "=", 
+            RowBox[{
+             RowBox[{"Length", "[", "r", "]"}], "-", "1"}]}]}], "}"}], ",", 
+         RowBox[{
+          RowBox[{"a", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"1", "-", "u"}], ")"}], "*", 
+               RowBox[{"r", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "j"}], "]"}], "]"}]}], "+", 
+              RowBox[{"u", "*", 
+               RowBox[{"r", "[", 
+                RowBox[{"[", 
+                 RowBox[{
+                  RowBox[{"i", "+", "1"}], ",", "j"}], "]"}], "]"}]}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", 
+               RowBox[{"n", "+", "1"}]}], "}"}]}], "]"}]}], ";", 
+          RowBox[{"{", 
+           RowBox[{"a", ",", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"1", "-", "v"}], ")"}], "*", 
+                RowBox[{"a", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", ",", "j"}], "]"}], "]"}]}], "+", 
+               RowBox[{"v", "*", 
+                RowBox[{"a", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", ",", 
+                   RowBox[{"j", "+", "1"}]}], "]"}], "]"}]}]}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"j", ",", "1", ",", "n"}], "}"}]}], "]"}]}], "}"}]}]}],
+         "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"constrdecast", "[", 
+        RowBox[{"pts_", ",", "t_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"n", "=", 
+            RowBox[{
+             RowBox[{"Length", "[", "pts", "]"}], "-", "1"}]}], ",", "a"}], 
+          "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"a", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{"0", ",", 
+             RowBox[{"{", 
+              RowBox[{"n", "+", "1"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"a", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "=", "pts"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"For", "[", 
+           RowBox[{
+            RowBox[{"j", "=", "1"}], ",", 
+            RowBox[{"j", "\[LessEqual]", "n"}], ",", 
+            RowBox[{"j", "++"}], ",", " ", 
+            RowBox[{
+             RowBox[{"a", "[", 
+              RowBox[{"[", 
+               RowBox[{"j", "+", "1"}], "]"}], "]"}], "=", " ", 
+             RowBox[{"Table", "[", " ", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", "t"}], ")"}], 
+                 RowBox[{"a", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"j", ",", 
+                    RowBox[{"i", "+", "1"}]}], "]"}], "]"}]}], "+", 
+                RowBox[{"t", "*", 
+                 RowBox[{"a", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"j", ",", 
+                    RowBox[{"i", "+", "2"}]}], "]"}], "]"}]}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "0", ",", 
+                 RowBox[{"n", "-", "j"}]}], "}"}]}], "]"}]}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"a", ",", "1"}], "]"}]}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"font", "=", "Medium"}], ";", 
+      RowBox[{"x1", "=", "150"}], ";", 
+      RowBox[{"x2", "=", "280"}], ";", 
+      RowBox[{"y", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"50", "-", 
+          RowBox[{"12", "*", "i"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "0", ",", "3"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"legende", "=", " ", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Text", "[", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{
+               RowBox[{"Row", "[", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<control net of the surface \>\"", ",", 
+                  RowBox[{"Style", "[", 
+                   RowBox[{"\"\<S\>\"", ",", "Italic"}], "]"}], ",", 
+                  "\"\<(\>\"", ",", 
+                  RowBox[{"Style", "[", 
+                   RowBox[{"\"\<u\>\"", ",", "Italic"}], "]"}], ",", 
+                  "\"\<,\>\"", ",", 
+                  RowBox[{"Style", "[", 
+                   RowBox[{"\"\<v\>\"", ",", "Italic"}], "]"}], ",", 
+                  "\"\<)\>\""}], "}"}], "]"}], ",", "11"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", 
+               RowBox[{"y", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", "Left"}], "]"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"Text", "[", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<first step of the algorithm\>\"", ",", "11"}], 
+              "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", 
+               RowBox[{"y", "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", "Left"}], "]"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"Text", "[", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<second step of the algorithm\>\"", ",", "11"}], 
+              "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", 
+               RowBox[{"y", "[", 
+                RowBox[{"[", "3", "]"}], "]"}]}], "}"}], ",", "Left"}], "]"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"Text", "[", 
+            RowBox[{
+             RowBox[{"Style", "[", 
+              RowBox[{
+               RowBox[{"Row", "[", 
+                RowBox[{"{", 
+                 RowBox[{"\"\<point \>\"", ",", 
+                  RowBox[{"Style", "[", 
+                   RowBox[{"\"\<S\>\"", ",", "Italic"}], "]"}], ",", 
+                  "\"\<(\>\"", ",", 
+                  RowBox[{"Subscript", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<u\>\"", ",", "Italic"}], "]"}], ",", "0"}], 
+                   "]"}], ",", "\"\<,\>\"", ",", 
+                  RowBox[{"Subscript", "[", 
+                   RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<v\>\"", ",", "Italic"}], "]"}], ",", "0"}], 
+                   "]"}], ",", "\"\<)\>\""}], "}"}], "]"}], ",", "11"}], 
+              "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", 
+               RowBox[{"y", "[", 
+                RowBox[{"[", "4", "]"}], "]"}]}], "}"}], ",", "Left"}], "]"}],
+            ",", "\[IndentingNewLine]", "Thin", ",", 
+           RowBox[{"PointSize", "[", "0.015", "]"}], ",", 
+           "\[IndentingNewLine]", "Blue", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",", 
+           RowBox[{"Point", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",",
+            "\[IndentingNewLine]", "Green", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",", 
+           RowBox[{"Point", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",",
+            "\[IndentingNewLine]", "Red", ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",", 
+           RowBox[{"Point", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x1", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"x2", ",", 
+                RowBox[{"y", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",",
+            "\[IndentingNewLine]", "Black", ",", 
+           RowBox[{"Point", "[", 
+            RowBox[{"{", 
+             RowBox[{"x1", ",", 
+              RowBox[{"y", "[", 
+               RowBox[{"[", "4", "]"}], "]"}]}], "}"}], "]"}]}], 
+          "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"ImageSize", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"330", ",", "75"}], "}"}]}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "10"}], ",", "300"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"8", ",", "55"}], "}"}]}], "}"}]}]}], "]"}]}], ";"}], 
+     "\[IndentingNewLine]", ")"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.492511412140625*^9, 3.492511486390625*^9}, {
+   3.492511629890625*^9, 3.49251171596875*^9}, {3.492752476859375*^9, 
+   3.49275248790625*^9}, {3.492752642609375*^9, 3.492752674609375*^9}, {
+   3.4927537559375*^9, 3.492753813828125*^9}, {3.492754081140625*^9, 
+   3.49275410540625*^9}, {3.492754727625*^9, 3.492754787796875*^9}, {
+   3.4927590475*^9, 3.492759051296875*^9}, {3.492760391765625*^9, 
+   3.49276040278125*^9}, {3.49276043365625*^9, 3.492760448046875*^9}, {
+   3.492760679015625*^9, 3.492760716953125*^9}, {3.4927608024375*^9, 
+   3.49276081275*^9}, {3.49276260315625*^9, 3.492762638796875*^9}, {
+   3.49276277859375*^9, 3.49276277903125*^9}, 3.492834587515625*^9, 
+   3.49283466115625*^9, {3.4928347525625*^9, 3.492834783453125*^9}, {
+   3.4928348489375*^9, 3.492834850265625*^9}, {3.492835182609375*^9, 
+   3.492835259875*^9}, {3.492835379265625*^9, 3.492835402*^9}, {
+   3.492836838953125*^9, 3.49283685128125*^9}, {3.492838612265625*^9, 
+   3.492838641453125*^9}, {3.492838746625*^9, 3.49283887559375*^9}, {
+   3.49283891178125*^9, 3.492838968515625*^9}, {3.492839086015625*^9, 
+   3.492839118796875*^9}, {3.492839619640625*^9, 3.492839623640625*^9}, 
+   3.49283965975*^9, {3.492839802015625*^9, 3.4928398035625*^9}, {
+   3.49283999446875*^9, 3.49284010240625*^9}, {3.492840250015625*^9, 
+   3.49284043715625*^9}, {3.49284061584375*^9, 3.492840714*^9}, {
+   3.492846112859375*^9, 3.49284612640625*^9}, {3.49284616215625*^9, 
+   3.49284623740625*^9}, {3.492846279203125*^9, 3.4928462871875*^9}, 
+   3.49284634803125*^9, {3.492846385328125*^9, 3.49284642396875*^9}, {
+   3.49285774434375*^9, 3.492857747140625*^9}, {3.4928577829375*^9, 
+   3.4928578575625*^9}, {3.492857915078125*^9, 3.492857923625*^9}, {
+   3.492857962796875*^9, 3.49285797728125*^9}, {3.492858045296875*^9, 
+   3.492858057359375*^9}, {3.492858100265625*^9, 3.492858128703125*^9}, {
+   3.49285815875*^9, 3.49285816821875*^9}, {3.493007517921875*^9, 
+   3.49300755484375*^9}, {3.493007616125*^9, 3.493007642796875*^9}, {
+   3.493007711015625*^9, 3.493007751453125*^9}, {3.493007797421875*^9, 
+   3.493007824*^9}, {3.49300787703125*^9, 3.493007877171875*^9}, {
+   3.493012989546875*^9, 3.49301300246875*^9}, {3.493013050421875*^9, 
+   3.49301315503125*^9}, {3.493013194703125*^9, 3.493013228953125*^9}, 
+   3.493013281921875*^9, {3.493013665046875*^9, 3.4930136834375*^9}, {
+   3.493013926875*^9, 3.4930139331875*^9}, {3.493013979375*^9, 
+   3.493014036546875*^9}, {3.49301833903125*^9, 3.493018362703125*^9}, {
+   3.493018431640625*^9, 3.493018439375*^9}, {3.49301852121875*^9, 
+   3.49301852484375*^9}, {3.493018584421875*^9, 3.493018604109375*^9}, {
+   3.493018651625*^9, 3.493018670109375*^9}, {3.493018709390625*^9, 
+   3.493018743875*^9}, 3.493018788625*^9, {3.49301882496875*^9, 
+   3.493018855109375*^9}, {3.493018895078125*^9, 3.49301901040625*^9}, {
+   3.493019044640625*^9, 3.493019093453125*^9}, {3.493019154859375*^9, 
+   3.493019170515625*^9}, {3.49301922228125*^9, 3.4930192450625*^9}, {
+   3.493019312078125*^9, 3.493019325265625*^9}, {3.49301937346875*^9, 
+   3.493019409046875*^9}, {3.4930194608125*^9, 3.4930194904375*^9}, {
+   3.4930195404375*^9, 3.493019552234375*^9}, {3.49301960890625*^9, 
+   3.493019654734375*^9}, {3.493019687515625*^9, 3.49301981665625*^9}, {
+   3.493019874734375*^9, 3.493019916375*^9}, {3.49302020725*^9, 
+   3.49302023478125*^9}, {3.493020272609375*^9, 3.493020329796875*^9}, {
+   3.493020384296875*^9, 3.49302040021875*^9}, {3.493020438796875*^9, 
+   3.49302044959375*^9}, 3.493020485859375*^9, {3.493020612265625*^9, 
+   3.49302063609375*^9}, {3.49302068421875*^9, 3.493020749046875*^9}, {
+   3.493020805296875*^9, 3.49302085465625*^9}, {3.49302089075*^9, 
+   3.49302094728125*^9}, {3.49302806209375*^9, 3.4930282279375*^9}, {
+   3.493028294203125*^9, 3.493028340265625*^9}, {3.493028386765625*^9, 
+   3.493028440015625*^9}, 3.4930284880625*^9, {3.49302865971875*^9, 
+   3.4930287079375*^9}, {3.493028785828125*^9, 3.4930288445625*^9}, {
+   3.493029032703125*^9, 3.493029078484375*^9}, {3.49302913034375*^9, 
+   3.493029144796875*^9}, {3.493029176734375*^9, 3.493029184890625*^9}, {
+   3.493029246234375*^9, 3.493029251328125*^9}, {3.4930915234375*^9, 
+   3.493091551640625*^9}, {3.4930916235*^9, 3.4930916619375*^9}, {
+   3.49309177890625*^9, 3.49309180096875*^9}, {3.49309183559375*^9, 
+   3.49309183746875*^9}, {3.493091869*^9, 3.493091872109375*^9}, {
+   3.493092061078125*^9, 3.49309214978125*^9}, {3.493092192515625*^9, 
+   3.493092219953125*^9}, {3.493092251828125*^9, 3.493092306*^9}, {
+   3.49309234965625*^9, 3.493092376265625*^9}, {3.493094301*^9, 
+   3.49309431053125*^9}, {3.493094507890625*^9, 3.493094552359375*^9}, {
+   3.4930946143125*^9, 3.493094802859375*^9}, 3.49309871184375*^9, {
+   3.493098934859375*^9, 3.49309894978125*^9}, {3.4930991149375*^9, 
+   3.493099140828125*^9}, {3.493115418953125*^9, 3.49311544475*^9}, 
+   3.493115959921875*^9, 3.493116020921875*^9, 3.49311633053125*^9, {
+   3.4931164161875*^9, 3.493116458015625*^9}, 3.493116673015625*^9, 
+   3.4931167883125*^9, 3.49311682521875*^9, {3.493628314484375*^9, 
+   3.493628315015625*^9}, {3.4936283543125*^9, 3.493628363359375*^9}, {
+   3.493629745890625*^9, 3.49362976121875*^9}, 3.49396339496875*^9, {
+   3.493963476703125*^9, 3.493963491734375*^9}, {3.4940007659035254`*^9, 
+   3.4940008347374077`*^9}, {3.4940008667336073`*^9, 3.4940010052604585`*^9}, 
+   3.49787219883503*^9, 3.4978754171187267`*^9},
+ CellID->779859947],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`meth$$ = 1, $CellContext`u0$$ = 
+    0.5, $CellContext`v0$$ = 0.5, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`u0$$], 0.5, "\!\(\*SubscriptBox[\(u\), \(0\)]\)"}, 
+      0.01, 1}, {
+      Hold[
+       Row[{
+         Manipulate`Place[1]}]], Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`v0$$], 0.5, "\!\(\*SubscriptBox[\(v\), \(0\)]\)"}, 
+      0.01, 1}, {
+      Hold[
+       Row[{
+         Manipulate`Place[2]}]], Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`meth$$], 1, "de Casteljau procedure:"}, {
+      1 -> "first by u", 2 -> "first by v", 3 -> "simultaneous"}}}, 
+    Typeset`size$$ = {332., {195.84375, 201.15625}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    False, $CellContext`u0$2420$$ = 0, $CellContext`v0$2421$$ = 
+    0, $CellContext`meth$2422$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     2, StandardForm, 
+      "Variables" :> {$CellContext`meth$$ = 1, $CellContext`u0$$ = 
+        0.5, $CellContext`v0$$ = 0.5}, "ControllerVariables" :> {
+        Hold[$CellContext`u0$$, $CellContext`u0$2420$$, 0], 
+        Hold[$CellContext`v0$$, $CellContext`v0$2421$$, 0], 
+        Hold[$CellContext`meth$$, $CellContext`meth$2422$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Grid[{{
+          Framed[$CellContext`legende, FrameMargins -> 0]}, {}, {
+          Show[
+           Graphics3D[{Black, 
+             PointSize[0.015], 
+             Point[
+              $CellContext`s[$CellContext`u0$$, $CellContext`v0$$]], Blue, 
+             PointSize[0.015], 
+             Point[$CellContext`listpoint], 
+             GraphicsComplex[$CellContext`listpoint, 
+              
+              Line[{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 4, 7}, {2, 5, 8}, {3,
+                6, 9}}]]}, BoxRatios -> {1.7, 1, 1}], 
+           ParametricPlot3D[
+            $CellContext`s[$CellContext`u, $CellContext`v], {$CellContext`u, 
+             0, 1}, {$CellContext`v, 0, 1}, Mesh -> None, BoundaryStyle -> 
+            Directive[Thin, Black], ColorFunction -> 
+            ColorData["LightTerrain"], PlotStyle -> Opacity[0.7]], 
+           Graphics3D[
+            Switch[$CellContext`meth$$, 1, {Green, 
+              PointSize[0.012], 
+              Point[
+               $CellContext`polyu[$CellContext`u0$$]], 
+              Table[
+               GraphicsComplex[
+                $CellContext`constrdecast[
+                 Part[
+                  
+                  Transpose[$CellContext`r], $CellContext`i], \
+$CellContext`u0$$], {
+                 Line[{4, 5}], 
+                 Point[{4, 5}]}], {$CellContext`i, 1, 3}], Red, 
+              Line[
+               $CellContext`polyu[$CellContext`u0$$]], 
+              GraphicsComplex[
+               $CellContext`constrdecast[
+                $CellContext`polyu[$CellContext`u0$$], $CellContext`v0$$], {
+                Line[{4, 5}], 
+                Point[{4, 5}]}]}, 2, {Green, 
+              PointSize[0.012], 
+              Point[
+               $CellContext`polyv[$CellContext`v0$$]], 
+              Table[
+               GraphicsComplex[
+                $CellContext`constrdecast[
+                 Part[$CellContext`r, $CellContext`i], $CellContext`v0$$], {
+                 Line[{4, 5}], 
+                 Point[{4, 5}]}], {$CellContext`i, 1, 3}], Red, 
+              Line[
+               $CellContext`polyv[$CellContext`v0$$]], 
+              GraphicsComplex[
+               $CellContext`constrdecast[
+                $CellContext`polyv[$CellContext`v0$$], $CellContext`u0$$], {
+                Line[{4, 5}], 
+                Point[{4, 5}]}]}, 3, {Green, 
+              
+              Module[{$CellContext`a$ = \
+$CellContext`decastmat[$CellContext`r, $CellContext`u0$$, $CellContext`v0$$], \
+$CellContext`b$}, $CellContext`b$ = $CellContext`decastmat[
+                  
+                  Part[$CellContext`a$, 
+                   2], $CellContext`u0$$, $CellContext`v0$$]; {
+                 GraphicsComplex[
+                  Flatten[$CellContext`a$, 2], {
+                   Point[{7, 8, 10, 9}], 
+                   Line[{{1, 2, 3}, {4, 5, 6}}], Red, 
+                   Line[{7, 8, 10, 9, 7}]}], Red, 
+                 GraphicsComplex[
+                  Flatten[$CellContext`b$, 2], {
+                   Point[{1, 2}], 
+                   Line[{1, 2}]}]}]}]], ImageSize -> {330, 300}]}}], 
+      "Specifications" :> {{{$CellContext`u0$$, 0.5, 
+          "\!\(\*SubscriptBox[\(u\), \(0\)]\)"}, 0.01, 1, Appearance -> 
+         "Labeled", ControlPlacement -> 1}, 
+        Row[{
+          Manipulate`Place[1]}], {{$CellContext`v0$$, 0.5, 
+          "\!\(\*SubscriptBox[\(v\), \(0\)]\)"}, 0.01, 1, Appearance -> 
+         "Labeled", ControlPlacement -> 2}, 
+        Row[{
+          Manipulate`Place[2]}], {{$CellContext`meth$$, 1, 
+          "de Casteljau procedure:"}, {
+         1 -> "first by u", 2 -> "first by v", 3 -> "simultaneous"}}}, 
+      "Options" :> {}, "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{381., {268., 273.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>(($CellContext`r = {{{3, 0, 0}, {3.5, 1, 1}, {3, 3, 
+          0}}, {{2, 0, 1}, {3, 2, 4}, {2, 4, 2}}, {{0, 0, 0}, {1, 2, 5}, {1, 
+         4, 4}}}; $CellContext`listpoint = 
+       Flatten[$CellContext`r, 1]; $CellContext`s[
+         Pattern[$CellContext`u, 
+          Blank[]], 
+         Pattern[$CellContext`v, 
+          Blank[]]] := {
+        3 - ((((-2.) $CellContext`u^2) (-1. + $CellContext`v)) (
+           0.5 + $CellContext`v) + $CellContext`v (-1. + 
+           1. $CellContext`v) + $CellContext`u (2. - 2. $CellContext`v + 
+           2. $CellContext`v^2)), $CellContext`v (
+          2 - (2 $CellContext`u) (-2 + $CellContext`v) + $CellContext`u^2 (-2 + \
+$CellContext`v) + $CellContext`v), 
+         2 ((-(-1 + $CellContext`v)) $CellContext`v + $CellContext`u (1 + 
+            4 $CellContext`v - 
+            3 $CellContext`v^2) + $CellContext`u^2 (-1 + $CellContext`v^2))}; \
+$CellContext`polyu[
+         Pattern[$CellContext`u0, 
+          Blank[]]] := 
+       Sum[BernsteinBasis[2, $CellContext`i - 1, $CellContext`u0] 
+         Part[$CellContext`r, $CellContext`i], {$CellContext`i, 1, 
+          3}]; $CellContext`polyv[
+         Pattern[$CellContext`v0, 
+          Blank[]]] := 
+       Sum[BernsteinBasis[2, $CellContext`i - 1, $CellContext`v0] Part[
+           Transpose[$CellContext`r], $CellContext`i], {$CellContext`i, 1, 
+          3}]; $CellContext`decastmat[
+         Pattern[$CellContext`r, 
+          Blank[]], 
+         Pattern[$CellContext`u, 
+          Blank[]], 
+         Pattern[$CellContext`v, 
+          Blank[]]] := 
+       Module[{$CellContext`a, $CellContext`n = 
+          Length[$CellContext`r] - 1}, $CellContext`a = 
+          Table[(1 - $CellContext`u) 
+             Part[$CellContext`r, $CellContext`i, $CellContext`j] + \
+$CellContext`u 
+             Part[$CellContext`r, $CellContext`i + 
+               1, $CellContext`j], {$CellContext`i, 
+             1, $CellContext`n}, {$CellContext`j, 1, $CellContext`n + 
+             1}]; {$CellContext`a, 
+           
+           Table[(1 - $CellContext`v) 
+             Part[$CellContext`a, $CellContext`i, $CellContext`j] + \
+$CellContext`v 
+             Part[$CellContext`a, $CellContext`i, $CellContext`j + 
+               1], {$CellContext`i, 1, $CellContext`n}, {$CellContext`j, 
+             1, $CellContext`n}]}]; $CellContext`constrdecast[
+         Pattern[$CellContext`pts, 
+          Blank[]], 
+         Pattern[$CellContext`t, 
+          Blank[]]] := 
+       Module[{$CellContext`n = 
+          Length[$CellContext`pts] - 1, $CellContext`a}, $CellContext`a = 
+          Table[0, {$CellContext`n + 1}]; 
+         Part[$CellContext`a, 1] = $CellContext`pts; 
+         For[$CellContext`j = 1, $CellContext`j <= $CellContext`n, 
+           Increment[$CellContext`j], 
+           Part[$CellContext`a, $CellContext`j + 1] = 
+           Table[(1 - $CellContext`t) 
+              Part[$CellContext`a, $CellContext`j, $CellContext`i + 
+                1] + $CellContext`t 
+              Part[$CellContext`a, $CellContext`j, $CellContext`i + 
+                2], {$CellContext`i, 0, $CellContext`n - $CellContext`j}]]; 
+         Flatten[$CellContext`a, 1]]; $CellContext`font = 
+       Medium; $CellContext`x1 = 150; $CellContext`x2 = 280; $CellContext`y = 
+       Table[50 - 
+         12 $CellContext`i, {$CellContext`i, 0, 3}]; $CellContext`legende = 
+       Graphics[{
+          Text[
+           Style[
+            Row[{"control net of the surface ", 
+              Style["S", Italic], "(", 
+              Style["u", Italic], ",", 
+              Style["v", Italic], ")"}], 11], {0, 
+            Part[$CellContext`y, 1]}, Left], 
+          Text[
+           Style["first step of the algorithm", 11], {0, 
+            Part[$CellContext`y, 2]}, Left], 
+          Text[
+           Style["second step of the algorithm", 11], {0, 
+            Part[$CellContext`y, 3]}, Left], 
+          Text[
+           Style[
+            Row[{"point ", 
+              Style["S", Italic], "(", 
+              Subscript[
+               Style["u", Italic], 0], ",", 
+              Subscript[
+               Style["v", Italic], 0], ")"}], 11], {0, 
+            Part[$CellContext`y, 4]}, Left], Thin, 
+          PointSize[0.015], Blue, 
+          Line[{{$CellContext`x1, 
+             Part[$CellContext`y, 1]}, {$CellContext`x2, 
+             Part[$CellContext`y, 1]}}], 
+          Point[{{$CellContext`x1, 
+             Part[$CellContext`y, 1]}, {$CellContext`x2, 
+             Part[$CellContext`y, 1]}}], Green, 
+          Line[{{$CellContext`x1, 
+             Part[$CellContext`y, 2]}, {$CellContext`x2, 
+             Part[$CellContext`y, 2]}}], 
+          Point[{{$CellContext`x1, 
+             Part[$CellContext`y, 2]}, {$CellContext`x2, 
+             Part[$CellContext`y, 2]}}], Red, 
+          Line[{{$CellContext`x1, 
+             Part[$CellContext`y, 3]}, {$CellContext`x2, 
+             Part[$CellContext`y, 3]}}], 
+          Point[{{$CellContext`x1, 
+             Part[$CellContext`y, 3]}, {$CellContext`x2, 
+             Part[$CellContext`y, 3]}}], Black, 
+          Point[{$CellContext`x1, 
+            Part[$CellContext`y, 4]}]}, ImageSize -> {330, 75}, 
+         PlotRange -> {{-10, 300}, {8, 55}}]; Null); 
+     Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->1070184012]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Caption", "Section",
+ CellFrameColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108],
+ FontColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108]],
+
+Cell["\<\
+This Demonstration shows three different ways of applying the de Casteljau \
+algorithm to a tensor-product B\[EAcute]zier surface.\
+\>", "Text"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Details", "Section",
+ CellFrameColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108],
+ FontColor->RGBColor[
+  0.6449835965514611, 0.758632791638056, 0.2516823071641108]],
+
+Cell[TextData[{
+ "A polynomial B\[EAcute]zier surface ",
+ Cell[BoxData[
+  FormBox["S", TraditionalForm]], "InlineMath"],
+ " in tensor-product form is described by the formula"
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"S", "(", 
+    RowBox[{
+     FormBox[
+      RowBox[{
+       RowBox[{"u", ",", "v"}], ")"}],
+      TraditionalForm], "=", 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"i", "=", "0"}], "n"], 
+      RowBox[{
+       UnderoverscriptBox["\[Sum]", 
+        RowBox[{"j", "=", "0"}], "p"], " ", 
+       RowBox[{
+        RowBox[{
+         SubscriptBox["B", 
+          RowBox[{"i", ",", "n"}]], "(", "u", ")"}], 
+        RowBox[{
+         SubscriptBox["B", 
+          RowBox[{"j", ",", "p"}]], "(", "v", ")"}], " ", 
+        SubscriptBox["R", 
+         RowBox[{"i", ",", "j"}]]}]}]}]}]}], TraditionalForm]], "InlineMath"],
+ ", where ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["R", 
+    RowBox[{"i", ",", "j"}]], TraditionalForm]], "InlineMath"],
+ " are the control points of ",
+ Cell[BoxData[
+  FormBox["S", TraditionalForm]], "InlineMath"],
+ "; they form the control net of ",
+ Cell[BoxData[
+  FormBox["S", TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ "Recall that ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SubscriptBox["B", 
+      RowBox[{"i", ",", "n"}]], "(", "u", ")"}], " ", "=", " ", 
+    RowBox[{
+     RowBox[{"(", GridBox[{
+        {"n"},
+        {"i"}
+       }], ")"}], 
+     RowBox[{"(", 
+      RowBox[{
+       SuperscriptBox[
+        RowBox[{
+         RowBox[{"1", "-", "u"}], ")"}], 
+        RowBox[{"n", "-", "i"}]], 
+       SuperscriptBox["u", "i"]}]}]}]}], TraditionalForm]], "InlineMath"],
+ " is the ",
+ Cell[BoxData[
+  FormBox[
+   SuperscriptBox["i", "th"], TraditionalForm]], "InlineMath"],
+ " Bernstein basis polynomial of degree ",
+ Cell[BoxData[
+  StyleBox["n", "TI"]], "InlineFormula"],
+ " in ",
+ Cell[BoxData[
+  FormBox["u", TraditionalForm]], "InlineMath"],
+ ", ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"i", "=", "0"}], ",", "\[Ellipsis]", ",", "n"}], 
+   TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ "In order to determine the point ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"S", "(", 
+    RowBox[{
+     SubscriptBox["u", 
+      RowBox[{"0", ","}]], 
+     SubscriptBox["v", "0"]}], ")"}], TraditionalForm]], "InlineMath"],
+ " (for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["u", "0"], "\[Element]", 
+    RowBox[{"[", 
+     RowBox[{"0", ",", "1"}], "]"}]}], TraditionalForm]], "InlineMath"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["v", "0"], "\[Element]", 
+    RowBox[{"[", 
+     RowBox[{"0", ",", "1"}], "]"}]}], TraditionalForm]], "InlineMath"],
+ "), the de Casteljau algorithm can be used. For a polynomial B\[EAcute]zier \
+curve "
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"C", "(", "t", ")"}], "=", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"i", "=", "0"}], "n"], 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["B", 
+        RowBox[{"i", ",", "n"}]], "(", "t", ")"}], " ", 
+      SubscriptBox["P", "i"]}]}]}], TraditionalForm]], "InlineMath"],
+ ", (for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"t", " ", "\[Element]", " ", 
+    RowBox[{"[", 
+     RowBox[{"0", ",", "1"}], "]"}]}], TraditionalForm]], "InlineMath"],
+ "),"
+}], "Text"],
+
+Cell[TextData[{
+ "where ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["P", "i"], TraditionalForm]], "InlineMath"],
+ " are the control points, this algorithm calculates a current point ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"C", "(", 
+    SubscriptBox["t", "0"]}], TraditionalForm]], "InlineMath"],
+ ") by applying the following recurrence formula:"
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubsuperscriptBox["P", "i", "0"], "=", 
+    SubscriptBox["P", "i"]}], TraditionalForm]], "InlineMath"],
+ ", for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"i", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ ","
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubsuperscriptBox["P", "i", "k"], "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"1", "-", 
+        SubscriptBox["t", "0"]}], ")"}], 
+      SubsuperscriptBox["P", "i", 
+       RowBox[{"k", "-", "1"}]]}], "+", 
+     RowBox[{
+      SubscriptBox["t", "0"], 
+      SubsuperscriptBox["P", 
+       RowBox[{"i", "+", "1"}], 
+       RowBox[{"k", "-", "1"}]]}]}]}], TraditionalForm]], "InlineMath"],
+ ", for",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{" ", 
+    RowBox[{"i", "=", "0"}]}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "-", "k"}], TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell["Finally, we obtain", "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"C", "(", 
+     SubscriptBox["t", "0"], ")"}], "=", 
+    SubsuperscriptBox["P", "0", "n"]}], TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ "In order to determine the point ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"S", "(", 
+    RowBox[{
+     SubscriptBox["u", 
+      RowBox[{"0", ","}]], 
+     SubscriptBox["v", "0"]}], ")"}], TraditionalForm]], "InlineMath"],
+ " (for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["u", "0"], "\[Element]", 
+    RowBox[{"[", 
+     RowBox[{"0", ",", "1"}], "]"}]}], TraditionalForm]], "InlineMath"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["v", "0"], "\[Element]", 
+    RowBox[{"[", 
+     RowBox[{"0", ",", "1"}], "]"}]}], TraditionalForm]], "InlineMath"],
+ "), the de Casteljau algorithm can be applied to the surface in the \
+following three ways:"
+}], "Text"],
+
+Cell[TextData[{
+ "First in the ",
+ Cell[BoxData[
+  FormBox["u", TraditionalForm]], "InlineMath"],
+ " direction: by de Casteljau, we first determine the points "
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["R", 
+     RowBox[{"*", 
+      RowBox[{",", "j"}]}]], "=", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"i", "=", "0"}], "n"], " ", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["B", 
+        RowBox[{"i", ",", "n"}]], "(", 
+       SubscriptBox["u", "0"], ")"}], " ", 
+      SubscriptBox["R", 
+       RowBox[{"i", ",", "j"}]]}]}]}], TraditionalForm]], "InlineMath"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"j", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["p", TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell["Next, the algorithm is used to compute ", "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"S", "(", 
+     RowBox[{
+      SubscriptBox["u", 
+       RowBox[{"0", ","}]], 
+      SubscriptBox["v", "0"]}], ")"}], "=", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"j", "=", "0"}], "p"], " ", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["B", 
+        RowBox[{"j", ",", "p"}]], "(", 
+       SubscriptBox["v", "0"], ")"}], " ", 
+      SubscriptBox["R", 
+       RowBox[{"*", 
+        RowBox[{",", "j"}]}]]}]}]}], TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ "Second in the ",
+ Cell[BoxData[
+  FormBox["v", TraditionalForm]], "InlineMath"],
+ " direction: analogously, we first determine the points "
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["R", 
+     RowBox[{"i", ",", "*"}]], "=", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"j", "=", "0"}], "p"], " ", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["B", 
+        RowBox[{"j", ",", "p"}]], "(", 
+       SubscriptBox["v", "0"], ")"}], " ", 
+      SubscriptBox["R", 
+       RowBox[{"i", ",", "j"}]]}]}]}], TraditionalForm]], "InlineMath"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"i", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell["Then we compute ", "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"S", "(", 
+     RowBox[{
+      SubscriptBox["u", 
+       RowBox[{"0", ","}]], 
+      SubscriptBox["v", "0"]}], ")"}], "=", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"i", "=", "0"}], "n"], " ", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox["B", 
+        RowBox[{"i", ",", "n"}]], "(", 
+       SubscriptBox["u", "0"], ")"}], " ", 
+      SubscriptBox["R", 
+       RowBox[{"i", ",", "*"}]]}]}]}], TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ "Simultaneously in the ",
+ Cell[BoxData[
+  FormBox["u", TraditionalForm]], "InlineMath"],
+ " and ",
+ Cell[BoxData[
+  FormBox["v", TraditionalForm]], "InlineMath"],
+ " directions: this method is easier to use in the case where ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "=", "p"}], TraditionalForm]], "InlineMath"],
+ ":"
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubsuperscriptBox["R", 
+     RowBox[{"i", ",", "j"}], "0"], "=", 
+    SubscriptBox["R", 
+     RowBox[{"i", ",", "j"}]], " "}], TraditionalForm]], "InlineMath"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"i", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"j", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ ","
+}], "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubsuperscriptBox["R", 
+     RowBox[{"i", ",", "j"}], "k"], "=", 
+    RowBox[{
+     RowBox[{"(", GridBox[{
+        {
+         RowBox[{"1", "-", 
+          SubscriptBox["v", "0"]}], 
+         SubscriptBox["v", "0"]}
+       }], ")"}], 
+     RowBox[{"(", GridBox[{
+        {
+         SubsuperscriptBox["R", 
+          RowBox[{"i", ",", "j"}], 
+          RowBox[{"k", "-", "1"}]], 
+         SubsuperscriptBox["R", 
+          RowBox[{
+           RowBox[{"i", "+", "1"}], ",", "j"}], 
+          RowBox[{"k", "-", "1"}]]},
+        {
+         SubsuperscriptBox["R", 
+          RowBox[{"i", ",", 
+           RowBox[{"j", "+", "1"}]}], 
+          RowBox[{"k", "-", "1"}]], 
+         SubsuperscriptBox["R", 
+          RowBox[{
+           RowBox[{"i", "+", "1"}], ",", 
+           RowBox[{"j", "+", "1"}]}], 
+          RowBox[{"k", "-", "1"}]]}
+       }], ")"}], 
+     RowBox[{"(", GridBox[{
+        {
+         RowBox[{"1", "-", 
+          SubscriptBox["u", "0"]}]},
+        {
+         SubscriptBox["u", "0"]}
+       }], ")"}]}]}], TraditionalForm]], "InlineMath"],
+ ", for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"i", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "-", "k"}], TraditionalForm]], "InlineMath"],
+ ", ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"j", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "-", "k"}], TraditionalForm]], "InlineMath"],
+ ", and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"k", "=", "1"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ ","
+}], "Text"],
+
+Cell["yielding ", "Text"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"S", "(", 
+     RowBox[{
+      SubscriptBox["u", 
+       RowBox[{"0", ","}]], 
+      SubscriptBox["v", "0"]}], ")"}], "=", 
+    SubsuperscriptBox["R", 
+     RowBox[{"0", ",", "0"}], "n"]}], TraditionalForm]], "InlineMath"],
+ "."
+}], "Text"],
+
+Cell[TextData[{
+ " If ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "<", "p"}], TraditionalForm]], "InlineMath"],
+ ", the above procedure is applied in order to calculate ",
+ Cell[BoxData[
+  FormBox[
+   SubsuperscriptBox["R", 
+    RowBox[{"i", ",", "j"}], "k"], TraditionalForm]], "InlineMath"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"k", "=", "0"}], TraditionalForm]], "InlineMath"],
+ " to ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]], "InlineMath"],
+ ", and next the ",
+ Cell[BoxData[
+  FormBox["v", TraditionalForm]], "InlineMath"],
+ " direction method is used to compute the remaining iteration levels. The \
+case ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", ">", "p"}], TraditionalForm]], "InlineMath"],
+ " is treated analogously."
+}], "Text"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["THIS NOTEBOOK IS THE SOURCE CODE FROM", "Text",
+ CellFrame->{{0, 0}, {0, 1}},
+ CellMargins->{{48, 10}, {4, 28}},
+ CellGroupingRules->{"SectionGrouping", 25},
+ CellFrameMargins->{{48, 48}, {6, 5}},
+ CellFrameColor->RGBColor[0.691905, 0.790311, 0.300252],
+ FontFamily->"Helvetica",
+ FontSize->10,
+ FontWeight->"Bold",
+ FontColor->RGBColor[0.691905, 0.790311, 0.300252]],
+
+Cell[TextData[{
+ "\"",
+ ButtonBox["de Casteljau Algorithm for a Tensor-Product B\[EAcute]zier \
+Surface",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/\
+DeCasteljauAlgorithmForATensorProductBezierSurface/"], None},
+  ButtonNote->
+   "http://demonstrations.wolfram.com/\
+DeCasteljauAlgorithmForATensorProductBezierSurface/"],
+ "\"",
+ " from ",
+ ButtonBox["The Wolfram Demonstrations Project",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/"], None},
+  ButtonNote->"http://demonstrations.wolfram.com/"],
+ "\[ParagraphSeparator]\[NonBreakingSpace]",
+ ButtonBox["http://demonstrations.wolfram.com/\
+DeCasteljauAlgorithmForATensorProductBezierSurface/",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/\
+DeCasteljauAlgorithmForATensorProductBezierSurface/"], None},
+  ButtonNote->
+   "http://demonstrations.wolfram.com/\
+DeCasteljauAlgorithmForATensorProductBezierSurface/"]
+}], "Text",
+ CellMargins->{{48, Inherited}, {0, Inherited}},
+ FontFamily->"Verdana",
+ FontSize->10,
+ FontColor->GrayLevel[0.5]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[" ", "Text",
+ CellFrame->{{0, 0}, {0, 1}},
+ CellMargins->{{48, 10}, {4, 28}},
+ CellGroupingRules->{"SectionGrouping", 25},
+ CellFrameMargins->{{48, 48}, {6, 5}},
+ CellFrameColor->RGBColor[0.691905, 0.790311, 0.300252],
+ FontFamily->"Helvetica",
+ FontSize->10,
+ FontWeight->"Bold",
+ FontColor->RGBColor[0.691905, 0.790311, 0.300252]],
+
+Cell[TextData[{
+ "Contributed by: ",
+ ButtonBox["Isabelle Cattiaux-Huillard",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/author.html?author=Isabelle+\
+Cattiaux-Huillard"], None},
+  ButtonNote->
+   "http://demonstrations.wolfram.com/author.html?author=Isabelle+Cattiaux-\
+Huillard"]
+}], "Text",
+ CellDingbat->"\[FilledSmallSquare]",
+ CellMargins->{{66, 48}, {2, 4}},
+ FontFamily->"Verdana",
+ FontSize->10,
+ FontColor->GrayLevel[0.6]],
+
+Cell[TextData[{
+ "A full-function Wolfram ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " system (Version 6 or higher) is required to edit this notebook.\n",
+ StyleBox[ButtonBox["GET WOLFRAM MATHEMATICA \[RightGuillemet]",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://www.wolfram.com/products/mathematica/"], None},
+  ButtonNote->"http://www.wolfram.com/products/mathematica/"],
+  FontFamily->"Helvetica",
+  FontWeight->"Bold",
+  FontSlant->"Italic",
+  FontColor->RGBColor[1, 0.42, 0]]
+}], "Text",
+ CellFrame->True,
+ CellMargins->{{48, 68}, {8, 28}},
+ CellFrameMargins->12,
+ CellFrameColor->RGBColor[0.865507, 0.90634, 0.680751],
+ CellChangeTimes->{3.3750111182355957`*^9},
+ ParagraphSpacing->{1., 1.},
+ FontFamily->"Verdana",
+ FontSize->10,
+ FontColor->GrayLevel[0.411765],
+ Background->RGBColor[0.986023, 0.991363, 0.969818]],
+
+Cell[TextData[{
+ "\[Copyright] ",
+ StyleBox[ButtonBox["The Wolfram Demonstrations Project & Contributors",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/"], None},
+  ButtonNote->"http://demonstrations.wolfram.com/"],
+  FontColor->GrayLevel[0.6]],
+ "\[ThickSpace]\[ThickSpace]\[ThickSpace]|\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+ StyleBox[ButtonBox["Terms of Use",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/termsofuse.html"], None},
+  ButtonNote->"http://demonstrations.wolfram.com/termsofuse.html"],
+  FontColor->GrayLevel[0.6]],
+ "\[ThickSpace]\[ThickSpace]\[ThickSpace]|\[ThickSpace]\[ThickSpace]\
+\[ThickSpace]",
+ StyleBox[ButtonBox["Make a new version of this Demonstration \
+\[RightGuillemet]",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/participate/upload.jsp?id=\
+DeCasteljauAlgorithmForATensorProductBezierSurface"], None},
+  ButtonNote->None],
+  FontColor->GrayLevel[0.6]]
+}], "Text",
+ CellFrame->{{0, 0}, {0, 0.5}},
+ CellMargins->{{48, 10}, {20, 50}},
+ CellFrameMargins->{{6, 0}, {6, 6}},
+ CellFrameColor->GrayLevel[0.6],
+ FontFamily->"Verdana",
+ FontSize->9,
+ FontColor->GrayLevel[0.6]]
+}, Open  ]]
+},
+Editable->True,
+Saveable->False,
+ScreenStyleEnvironment->"Working",
+WindowSize->{1272, 860},
+WindowMargins->{{Inherited, Inherited}, {Inherited, 0}},
+WindowTitle->"de Casteljau Algorithm for a Tensor-Product B\[EAcute]zier \
+Surface - Source",
+DockedCells->{},
+CellContext->Notebook,
+FrontEndVersion->"8.0 for Microsoft Windows (32-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[665, 24, 266, 6, 71, "Section"],
+Cell[CellGroupData[{
+Cell[956, 34, 31023, 722, 962, "Input",
+ CellID->779859947],
+Cell[31982, 758, 11082, 244, 70, "Output",
+ CellID->1070184012]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[43113, 1008, 199, 4, 70, "Section"],
+Cell[43315, 1014, 154, 3, 70, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[43506, 1022, 199, 4, 70, "Section"],
+Cell[43708, 1028, 187, 5, 70, "Text"],
+Cell[43898, 1035, 1023, 36, 70, "Text"],
+Cell[44924, 1073, 924, 37, 70, "Text"],
+Cell[45851, 1112, 701, 25, 70, "Text"],
+Cell[46555, 1139, 549, 20, 70, "Text"],
+Cell[47107, 1161, 360, 11, 70, "Text"],
+Cell[47470, 1174, 350, 14, 70, "Text"],
+Cell[47823, 1190, 701, 27, 70, "Text"],
+Cell[48527, 1219, 34, 0, 70, "Text"],
+Cell[48564, 1221, 209, 8, 70, "Text"],
+Cell[48776, 1231, 708, 25, 70, "Text"],
+Cell[49487, 1258, 172, 5, 70, "Text"],
+Cell[49662, 1265, 646, 25, 70, "Text"],
+Cell[50311, 1292, 55, 0, 70, "Text"],
+Cell[50369, 1294, 553, 21, 70, "Text"],
+Cell[50925, 1317, 169, 5, 70, "Text"],
+Cell[51097, 1324, 629, 24, 70, "Text"],
+Cell[51729, 1350, 32, 0, 70, "Text"],
+Cell[51764, 1352, 534, 20, 70, "Text"],
+Cell[52301, 1374, 350, 12, 70, "Text"],
+Cell[52654, 1388, 577, 23, 70, "Text"],
+Cell[53234, 1413, 1688, 64, 70, "Text"],
+Cell[54925, 1479, 25, 0, 70, "Text"],
+Cell[54953, 1481, 306, 12, 70, "Text"],
+Cell[55262, 1495, 762, 26, 70, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[56061, 1526, 373, 9, 70, "Text",
+ CellGroupingRules->{"SectionGrouping", 25}],
+Cell[56437, 1537, 1113, 32, 70, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[57587, 1574, 337, 9, 70, "Text",
+ CellGroupingRules->{"SectionGrouping", 25}],
+Cell[57927, 1585, 474, 15, 70, "Text"],
+Cell[58404, 1602, 847, 24, 70, "Text"],
+Cell[59254, 1628, 1226, 33, 70, "Text"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
